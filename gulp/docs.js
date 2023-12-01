@@ -13,8 +13,8 @@ const csso = require('gulp-csso');
 const webpCss = require('gulp-webp-css');
 
 const server = require('gulp-server-livereload');
-const clean =  require('gulp-clean');
-const fs =  require('fs');
+const clean = require('gulp-clean');
+const fs = require('fs');
 const sourceMaps = require('gulp-sourcemaps');
 const groupMedia = require('gulp-group-css-media-queries');
 const plumber = require('gulp-plumber');
@@ -67,7 +67,8 @@ gulp.task('html:docs', function(){
 
 
 gulp.task('sass:docs', function(){
-    return gulp.src('./src/scss/*.scss')
+    return gulp
+    .src('./src/scss/*.scss')
     .pipe(changed('./docs/css/'))
     .pipe(plumber(plumberNotify('SCSS')))
     .pipe(sourceMaps.init())
