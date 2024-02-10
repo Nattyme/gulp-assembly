@@ -1,9 +1,9 @@
 const gulp = require('gulp');
 
 //HTML
-const fileInclude = require('gulp-file-include');
 const htmlclean = require('gulp-htmlclean');
 const webpHTML = require('gulp-webp-html');
+const pug = require('gulp-pug');
 
 // SASS
 const sass = require('gulp-sass')(require('sass'));
@@ -54,17 +54,14 @@ const plumberNotify = (title) => {
     };
 };
 
-gulp.task('html:docs', function(){
-    return gulp
-        .src(['./src/html/**/*.html', '!./src/html/blocks/*.html'])
-        .pipe(changed('./docs/'))
-        .pipe(plumber(plumberNotify('HTML')))
-        .pipe(fileInclude(fileIncludeSettings))
-        .pipe(webpHTML())
-        .pipe(htmlclean())
-        .pipe(gulp.dest('./docs/'));
-});
-
+// Таск для сборки Gulp файлов
+gulp.task('pug:docs', function(){
+    return gulp.src('./src/pug/pages/**/*.pug')
+    .pipe( pug({
+        pretty: true
+    }) )
+    .pipe(gulp.dest('./docs/'))
+})
 
 gulp.task('sass:docs', function(){
     return gulp
