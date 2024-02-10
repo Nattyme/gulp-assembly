@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const fileInclude = require('gulp-file-include');
+const pug = require('gulp-pug');
 const sass = require('gulp-sass')(require('sass'));
 const sassGlob = require('gulp-sass-glob');
 const server = require('gulp-server-livereload');
@@ -40,16 +40,14 @@ const plumberNotify = (title) => {
     };
 }
 
-gulp.task('html:dev', function(){
-    return gulp
-        .src(['./src/html/**/*.html', '!./src/html/blocks/*.html'])
-        .pipe(changed('./build/', { hasChanged: changed.compareContents}))
-        .pipe(plumber(plumberNotify('HTML')))
-        .pipe(fileInclude(fileIncludeSettings))
-        .pipe(gulp.dest('./build/'));
-
-});
-
+// Таск для сборки Gulp файлов
+gulp.task('pug:dev', function(){
+    return gulp.src('./src/pug/pages/**/*.pug')
+    .pipe( pug({
+        pretty: true
+    }) )
+    .pipe(gulp.dest('./build/'))
+})
 
 gulp.task('sass:dev', function(){
     return gulp.src('./src/scss/*.scss')
@@ -101,7 +99,7 @@ gulp.task('server:dev', function(){
 
 gulp.task('watch:dev', function(){
     gulp.watch('./src/scss/**/*.scss', gulp.parallel('sass:dev'));
-    gulp.watch('./src/**/*.html', gulp.parallel('html:dev'));
+    gulp.watch('./src/**/*.pug', gulp.parallel('pug:dev'));
     gulp.watch('./src/img/**/*', gulp.parallel('images:dev'));
     gulp.watch('./src/fonts/**/*', gulp.parallel('fonts:dev'));
     gulp.watch('./src/files/**/*', gulp.parallel('files:dev'));
